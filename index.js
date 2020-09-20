@@ -1,5 +1,6 @@
 // Import config.json
 const fs = require('fs');
+const chalk = require('chalk');
 const { prefix, token } = require('./config.json');
 // Import DiscordJS and create a new client
 const Discord = require('discord.js');
@@ -10,8 +11,11 @@ const rocketBot = new Bot(client, token);
 rocketBot.login();
 // Happens on every message event
 rocketBot.client.on('message', message => {
-    // Log every message - Very basic
-    console.log(message.content);
+    // If the message is not a command
+    if (!message.content.startsWith(prefix) || message.author.bot) {
+        // Log every message - User: Bright Red, Message: Bright White
+        console.log(`${chalk.redBright(message.author.username)}: ${chalk.whiteBright(message.content)}`);
+    }
     // Do some message checks
     if (message.content.toString().toLowerCase().startsWith(`${prefix}ping`)) {
         message.channel.send('Pong.');
